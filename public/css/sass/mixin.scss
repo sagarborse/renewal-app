@@ -1,0 +1,149 @@
+//mixins
+
+@mixin word-wrap() {
+  word-break: break-all;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
+}
+
+@mixin ellipsis() {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@mixin border-radius($radius) {
+  border-radius: $radius;
+  -moz-border-radius: $radius;
+  -o-border-radius: $radius;
+  -webkit-border-radius: $radius;
+}
+
+@mixin animation ($content) {
+  -moz-animation: $content;
+  -webkit-animation: $content;
+  -o-animation: $content;
+  animation: $content;
+}
+
+@mixin appearance ($content) {
+  -webkit-appearance: $content;
+  -moz-appearance: $content;
+  -o-appearance: $content;
+  -ms-appearance: $content;
+  appearance: $content;
+}
+
+// mixins
+
+@mixin transition($prop) {
+  -webkit-transition: #{$prop};
+  -moz-transition: #{$prop};
+  /*noinspection CssUnknownProperty*/
+  -ms-transition: #{$prop};
+  -o-transition: #{$prop};
+  transition: #{$prop};
+}
+
+@mixin opacity($val) {
+  -ms-opacity: $val;
+  filter: opacity($val * 100);
+  opacity: $val;
+}
+
+@mixin keyframes ($animation_name) {
+
+  @-webkit-keyframes #{$animation_name} {
+    @content;
+  }
+
+  @-moz-keyframes #{$animation_name} {
+    @content;
+  }
+
+  @-o-keyframes #{$animation_name} {
+    @content;
+  }
+
+  @keyframes #{$animation_name} {
+    @content;
+  }
+}
+
+@mixin animate ($name) {
+  -webkit-animation-name: $name;
+  animation-name: $name;
+}
+
+@mixin screen ($min, $max, $orientation:false) {
+  @if $orientation != false {
+    @media screen and (min-width: $min) and (max-width: $max) and (orientation: $orientation) {
+      @content
+    }
+  } @else {
+    @media screen and (min-width: $min) and (max-width: $max) {
+      @content
+    }
+  }
+}
+
+@mixin min-width ($minW) {
+  @media screen and (min-width: $minW) {
+    @content
+  }
+}
+
+@mixin max-width ($maxW) {
+  @media screen and (max-width: $maxW) {
+    @content
+  }
+}
+
+@mixin min-height ($minH) {
+  @media screen and (min-height: $minH) {
+    @content
+  }
+}
+
+@mixin max-height ($maxH) {
+  @media screen and (max-height: $maxH) {
+    @content
+  }
+}
+
+@mixin small-devices {
+  @media screen and (min-width: $screen-xs-min) and (max-width: $screen-sm-min - 1px) {
+    @content
+  }
+}
+
+@mixin landscape {
+  @media screen and (orientation: landscape) {
+    @content
+  }
+}
+
+@mixin tablet {
+  @media (min-width: #{$screen-sm-min}) and (max-width: #{$desktop-width - 1px}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$desktop-width}) {
+    @content;
+  }
+}
+
+@mixin retina {
+  @media
+  only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and (min--moz-device-pixel-ratio: 2),
+  only screen and (-o-min-device-pixel-ratio: 2/1),
+  only screen and (min-device-pixel-ratio: 2),
+  only screen and (min-resolution: 192dpi),
+  only screen and (min-resolution: 2dppx) {
+    @content;
+  }
+}

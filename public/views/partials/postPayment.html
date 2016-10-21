@@ -1,0 +1,88 @@
+<div class="contentWrp container-fluid">
+    <div class="glyphicon large {{status}}" ng-class="{'glyphicon-ok': status === 'success', 'glyphicon-remove': status === 'error'}"></div>
+    <div class="title successTitle" ng-if="status === 'success'">
+        Thanks, Your Payment Was <span class="success">Successful</span>
+    </div>
+    <div class="title errorTitle" ng-if="status === 'error'">
+        Oops, Your Payment Was <span class="danger">Unsuccessful</span>
+    </div>
+    <div class="subTitle successSubTitle" ng-if="status === 'success'">
+        Thank you for visiting Bigrock. You should receive your confirmation email shortly.
+    </div>
+    <div class="subTitle errorSubTitle" ng-if="status === 'error'">
+        Looks like something went wrong while making the payment. Try renewing the product once again or contact support if still unsuccessful.
+    </div>
+    <div class="tableWrp" ng-show="status === 'success'">
+        <table class="table cartList">
+            <tr class="header" ng-show="shoppingCart.items">
+                <th class="col-md-2">ORDER ID</th>
+                <th class="col-md-2">INVOICE DATE</th>
+                <th class="col-md-4">PRODUCT DESCRIPTION</th>
+                <th class="col-md-2">DURATION</th>
+                <th class="col-md-2">AMOUNT PAID</th>
+            </tr>
+            <tr class="text-center" ng-init="item.addonsExpanded = false" ng-repeat-start="item in shoppingCart.items">
+                <td class="orderId text-center">
+                    {{item.orderId}}
+                </td>
+                <td class="invoiceDate">
+                    {{getNow()}}
+                </td>
+                <td class="description text-center">
+                    {{getDescription(item)}}
+                </td>
+                <td class="duration">
+                    {{getFormattedTenure(item.selectedTenure)}}
+                </td>
+                <td class="total text-center">
+                    <span class="webrupee">Rs.</span> {{getItemTotal(item)}}
+                </td>
+            </tr>
+            <tr class="addonTrigger" ng-if="item.addons">
+                <td class="text-center">
+                    <a href ng-click="item.addonsExpanded = !item.addonsExpanded">
+                        <span>Addons</span>
+                        <span ng-if="item.addonsExpanded == false">+</span>
+                        <span ng-if="item.addonsExpanded == true">-</span>
+                    </a>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td ng-show="item.addonsExpanded === false">+ <span class="webrupee">Rs.</span> {{getAddonTotal(item.addons)}}</td>
+            </tr>
+            <tr class="addonWrp" ng-repeat="addon in item.addons" ng-show="item.addonsExpanded === true && item.addons">
+                <td></td>
+                <td></td>
+                <td class="addonName">
+                    <span ng-if="addon.name !== 'ssl'">{{addon.name}}</span>
+                    <span ng-if="addon.name === 'ssl'">IP</span>
+                    <span ng-if="addon.cost">(@ Rs.{{addon.cost}}/mo)</span>
+                </td>
+                <td class="addonTenure"></td>
+                <td class="addonCost" ng-if="addon.cost && addon.name !== 'ssl'"><span class="webrupee">Rs.</span> {{addon.cost * selectedTenure}}</td>
+                <td class="addonCost" ng-if="!addon.cost || addon.name === 'ssl'">Free</td>
+            </tr>
+            <tr ng-repeat-end></tr>
+            <tr class="grandTotalWrp">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="text-right"><strong>Grand Total:</strong></td>
+                <td class="grandTotal">
+                    <strong><span class="webrupee">Rs.</span> {{getGrandTotal()}}</strong>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="linksWrp text-center">
+        <p ng-if="status === 'success'">
+            <a href="/#/renewal">Renew other products ></a>
+            <a href="/">Visit Homepage ></a>
+        </p>
+        <p ng-if="status === 'error'">
+            <a href="/#/renewal">Renew Again ></a>
+            <a href="http://www.bigrock.in/support/contact-us.php">Contact Support ></a>
+        </p>
+    </div>
+</div>

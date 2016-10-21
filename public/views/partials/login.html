@@ -1,0 +1,31 @@
+<div class="col-sm-6 col-sm-offset-3">
+    <div class="well" ng-show="showForgotPass !== true">
+        <h3>Login</h3>
+        <form name="loginForm" ng-submit="signIn(loginForm.$valid)" novalidate>
+            <div class="form-group">
+                <input type="email" name="email" class="form-control" placeholder="Email" ng-model="email" required autofill>
+                <p ng-show="loginForm.email.$invalid && !loginForm.email.$pristine" class="help-block">Email is required</p>
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" class="form-control" placeholder="Password" ng-model="password" required autofill>
+                <p ng-show="loginForm.password.$invalid && !loginForm.password.$pristine" class="help-block">Password is required</p>
+            </div>
+            <div class="form-group forgotWrp" style="display: none;">
+                <a href class="text-right" ng-click="showForgotPass = true" >Forgot Password?</a>
+            </div>
+            <button data-event-category="login-form" data-event-action="login-click" type="submit" class="btn btn-primary" ng-disabled="loginBtnText !== 'Login'">{{loginBtnText}}</button>
+        </form>
+    </div>
+    <div class="well forgotPass" ng-show="showForgotPass === true">
+        <h3>Reset Password</h3>
+        <form class="forgotPassForm" name="forgotPassForm" ng-submit="forgotPass(forgotPassForm.$valid)" novalidate>
+            <div class="form-group">
+                <input type="email" name="email" class="form-control" placeholder="Email" ng-model="email" required autofill>
+            </div>
+            <div class="form-group backWrp">
+                <a href class="back" ng-click="showForgotPass = false" >< back</a>
+            </div>
+            <button type="submit" class="btn btn-primary" ng-disabled="forgotPassForm.$invalid || forgotPassBtn !== 'Send Instructions'">{{forgotPassBtn}}</button>
+        </form>
+    </div>
+</div>

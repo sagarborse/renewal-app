@@ -1,0 +1,34 @@
+// variables
+
+// device widths
+$sm-devices: 768px;
+$md-devices: 992px;
+$lg-devices: 1200px;
+$screen-xs-min: 320px;
+$screen-xs-max: 480px;
+$screen-sm-min: $sm-devices;
+$screen-md-min: $md-devices;
+$desktop-width: 1024px;
+$screen-lg-min: 1220px;
+
+// common colors
+$basefontColor: #5b626a;
+$dashboardTitleColor: darken($basefontColor, 4);
+$dashboardSubTitleColor: lighten($basefontColor, 30);
+$dashboardBgColor: #eee;
+$placeholderColor: #ccc;
+$borderColor: #dddddd;
+
+$errColor: #e74c3c;
+$successColor: #2ecc71;
+$warningColor: #f1c40f;
+
+$brightgreen: #5cb85c;
+$lightgrey: #34383c;
+$darkgrey: #1e2226;
+
+// common widths
+$sidebarWidth: 200px;
+
+// font sizes
+$inputFontSize: 15px;

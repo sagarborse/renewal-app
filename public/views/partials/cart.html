@@ -1,0 +1,105 @@
+<div class="contentWrp container-fluid">
+    <div class="row titleWrp">
+        <h1 class="text-center">Your Order Summary!</h1>
+
+        <p class="subtext text-center">You're just a step away from completing your purchase.</p>
+        <a data-event-category="cart" data-event-action="go-back-click" class="back" ng-click="clearCartAndGoBack()"><i class="glyphicon glyphicon-arrow-left"> </i>Go back</a>
+    </div>
+    <div class="row tableWrp">
+        <table class="table cartList">
+            <tr class="header" ng-show="shoppingCart.items">
+                <th class="col-md-6">PRODUCT DESCRIPTION</th>
+                <th class="col-md-3">DURATION</th>
+                <th class="col-md-3">TOTAL AMOUNT</th>
+            </tr>
+            <tr ng-show="!shoppingCart.items">
+                <td colspan="3" class="text-center">No items in cart!</td>
+            </tr>
+            <tr class="text-center" ng-init="item.addonsExpanded = false" ng-repeat-start="item in shoppingCart.items">
+                <td class="description text-center">
+                    {{getDescription(item)}}
+                </td>
+                <td class="duration">
+                    <div uib-dropdown class="dropdown">
+                        <a href uib-dropdown-toggle class="dropdown-toggle">{{getFormattedTenure(item.selectedTenure)}} <i class="caret"></i></a>
+                        <ul uib-dropdown-menu class="dropdown-menu">
+                            <li ng-repeat="(tenure, cost) in item.pricing">
+                                <a href ng-click="changeTenure(item, tenure)">{{getFormattedTenure(tenure)}} @ <span class="webrupee">Rs.</span> {{cost}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+                <td class="total text-center">
+                    <span class="webrupee">Rs.</span> {{getItemTotal(item)}}
+                </td>
+            </tr>
+            <tr class="addonTrigger" ng-if="item.addons">
+                <td class="text-center">
+                    <a href ng-click="item.addonsExpanded = !item.addonsExpanded">
+                        <span>Addons</span>
+                        <span ng-if="item.addonsExpanded == false">+</span>
+                        <span ng-if="item.addonsExpanded == true">-</span>
+                    </a>
+                </td>
+                <td></td>
+                <td ng-show="item.addonsExpanded === false">+ <span class="webrupee">Rs.</span> {{getAddonTotal(item.addons)}}</td>
+            </tr>
+            <tr class="addonWrp" ng-repeat="addon in item.addons" ng-show="item.addonsExpanded === true && item.addons">
+                <td class="addonName">
+                    <span ng-if="addon.name !== 'ssl'">{{addon.name}}</span>
+                    <span ng-if="addon.name === 'ssl'">IP</span>
+                    <span ng-if="addon.cost">(@ Rs.{{addon.cost}}/mo)</span>
+                </td>
+                <td class="addonTenure"></td>
+                <td class="addonCost" ng-if="addon.cost && addon.name !== 'ssl'"><span class="webrupee">Rs.</span> {{addon.cost * selectedTenure}}</td>
+                <td class="addonCost" ng-if="!addon.cost || addon.name === 'ssl'">Free</td>
+            </tr>
+            <tr ng-repeat-end></tr>
+            <tr class="grandTotalWrp">
+                <td></td>
+                <td class="text-right"><strong>Grand Total:</strong></td>
+                <td class="grandTotal">
+                    <strong><span class="webrupee">Rs.</span> {{getGrandTotal()}}</strong>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="row loadingPaymentMethod text-center" ng-show="loadingPaymentMethods">
+        <h3>Please wait while we fetch available Payment Options...</h3>
+    </div>
+    <div class="row paymentOptionsWrp" ng-hide="loadingPaymentMethods">
+        <h1 class="title text-left">Choose A Payment Option:</h1>
+        <ul class="paymentOptionsContainer clearfix">
+            <li class="col-xs-12 col-sm-{{getColumns()}}" ng-repeat="paymentMethod in paymentMethods | orderBy:'displayposition' " ng-click="selectMethod(paymentMethod)">
+                <!--<input type="radio" name="paymentMethod" class="" ng-model="paymentMethod.selected" />-->
+                <div class="col-xs-12 col-sm-12 paymentOption box {{paymentMethod.gatewaytype | replace:'.':'_'}}" ng-class="{selected: paymentMethod === selectedMethod}">
+                    <i class="glyphicon glyphicon-ok-sign hidden" ng-class="{hidden: paymentMethod != selectedMethod}"></i>
+                    <div class="imgWrp" ng-include="getIcons(paymentMethod, 'svg')">
+                        <!--<object data="{{getIcons(paymentMethod, 'svg')}}" type="image/svg+xml">-->
+                            <!--&lt;!&ndash;[if IE]>-->
+                            <!--<img src="{{getIcons(paymentMethod)}}" alt="">-->
+                            <!--<![endif]&ndash;&gt;-->
+                        <!--</object>-->
+                    </div>
+                    <div class="name">{{paymentMethod.gatewayname}}</div>
+                    <div class="walletBalance" ng-if="paymentMethod.gatewaytype === 'bigrockwallet'">
+                        (Balance: <span class="webRupee">Rs.</span> {{paymentMethod.totalsellingbalance}})
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="row payNowWrp" ng-hide="loadingPaymentMethods">
+        <div class="col-sm-4 hidden-xs">
+            <div class="autoRenewWrp">
+
+            </div>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            <a data-event-category="cart" data-event-action="pay-now-click" href class="btn btn-lg btn-success" ng-disabled="selectedMethod === null" ng-click="selectedMethod === null || checkout()" ><i class="glyphicon glyphicon-lock"></i> {{checkoutBtnTxt}}</a>
+        </div>
+        <div class="col-sm-4 hidden-xs">
+            By clicking 'Pay Securely Now' you are agreeing to BigRock's <a href="">Terms &amp; Conditions</a>.
+        </div>
+    </div>
+</div>

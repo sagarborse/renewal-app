@@ -1,0 +1,32 @@
+<div class="row header border-bottom">
+    <div class="col-md-3 col-sm-6 col-xs-6">
+        <img src="/images/bigrock-logo.png" alt="Bigrock Logo" class="logo img-responsive">
+    </div>
+    <div class="col-md-3 hidden-sm hidden-xs text-left clearfix">
+        <div class="pull-left iconWrp">&#128172;</div>
+        <div class="pull-left">
+            <p id="contact-tata" style="display:block" class="font-xxlarge ui-label bold"> 1-800-266-7625 <span style="color: rgb(165, 165, 165); vertical-align: middle; font-size: 11px; font-weight: normal;">(India Toll Free)</span><br>91-22-67209001</p>
+        </div>
+    </div>
+    <div class="col-md-3 hidden-sm hidden-xs">
+        <a data-event-category="link-bar" data-event-action="live-chat-click" href="https://support.bigrock.com/chats/visitor/index.php?/BigRock/LiveChat/Chat/Request/_sessionID=/_promptType=chat/_proactive=0/_filterDepartmentID=7%2C6%2C8/_randomNumber=nqko4naahprqzncasa3rzne6k4v2kng1/_fullName=/_email=/" class="btn btn-success">Live Chat</a>
+        <a data-event-category="link-bar" data-event-action="support-click" href="http://www.bigrock.in/support/" class="btn btn-grey">Support</a>
+        <a data-event-category="link-bar" data-event-action="contact-us-click" href="http://www.bigrock.in/contact-us/" class="btn btn-grey">Contact Us</a>
+    </div>
+    <div class="col-md-3 col-sm-5 col-xs-5 col-xs-offset-1 col-md-offset-0 clearfix menu">
+        <div class="pull-left col-md-6">
+            <i class="fa fa-user"></i>
+            <span ng-if="!currentUser" class="nameWrp">Hi, Guest</span>
+            <span ng-if="currentUser" class="nameWrp" uib-dropdown >
+                <a href id="profileMenu" class="profileName" uib-dropdown-toggle >Hi, {{currentUser.fname}} <i class="caret"></i></a>
+                <ul uib-dropdown-menu >
+                    <li><a data-event-category="link-bar" data-event-action="logout-click" href ng-click="logout()">Logout</a></li>
+                </ul>
+            </span>
+        </div>
+        <div class="pull-left col-md-6" ng-class="{hidden: flowType === 'renewal'}">
+            <i class="fa fa-shopping-cart"></i>
+            <span class="cartWrp" >Cart({{shoppingCart.items.length}})</span>
+        </div>
+    </div>
+</div>

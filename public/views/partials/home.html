@@ -1,0 +1,58 @@
+<div class="domainsWrp" ng-init="init()" style="height: 100%;">
+    <div class="container-fluid searchWrp fullScreen"
+         ng-class="{fullScreen: objectLength(domains.primaryCollection) === 0}">
+        <div class="loadingWrp" ng-show="domainPageLoading === true">
+            <h1 class="title text-center">Your Search Begins Here</h1>
+
+            <div class="loading_dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="contentWrp hidden" ng-class="{hidden: domainPageLoading === true}">
+            <h1 class="title">Search for your Domain Name:</h1>
+            <div class="searchBox">
+                <input type="text" name="domainNames" ng-model="domains.formData.domainNames"
+                       ng-keyup="$event.keyCode == 13 && checkAvailability()"/>
+                <a class="btn btn-primary" ng-click="checkAvailability()">Search</a>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid resultWrp" ng-cloak ng-class="{hidden: objectLength(domains.primaryCollection) === 0}">
+        <ul class="primaryWrp">
+            <li ng-repeat="primaryDomain in domains.primaryCollection">
+                <div class="col-xs-3 name">{{primaryDomain.domainName}}</div>
+                <div class="col-xs-3 statusWrp">
+                    <span class="status label {{primaryDomain.status}}">{{primaryDomain.status}}</span>
+                </div>
+                <div class="col-xs-3 pricing" ng-class="{invisible: primaryDomain.status !== 'available'}">
+                    {{primaryDomain.pricing['addnewdomain'][1]}}/yr
+                </div>
+                <div class="col-xs-3 btnWrp">
+                    <a href="#" class="btn btn-primary" ng-class="{disabled: primaryDomain.status !== 'available'}"
+                       ng-click="addToCart(primaryDomain)">{{getBtnText(primaryDomain)}}</a>
+                </div>
+            </li>
+        </ul>
+        <h4 class="text-center" ng-class="{hidden: domains.secondaryCollection.length === 0}">Suggestions</h4>
+        <ul class="secondaryWrp">
+            <li ng-repeat="secondaryDomain in domains.secondaryCollection">
+                <div class="col-xs-3 name">{{secondaryDomain.domainName}}</div>
+                <div class="col-xs-3 statusWrp" ng-class="{invisible: secondaryDomain.status !== 'premium'}">
+                    <span class="status label {{secondaryDomain.status}}">{{secondaryDomain.status}}</span>
+                </div>
+                <div class="col-xs-3 pricing" ng-if="secondaryDomain.status === 'available'">
+                    {{secondaryDomain.pricing['addnewdomain'][1]}}/yr
+                </div>
+                <div class="col-xs-3 pricing" ng-if="secondaryDomain.status === 'premium'">
+                    {{secondaryDomain.pricing['premium']}}
+                </div>
+                <div class="col-xs-3 btnWrp">
+                    <a href="#" class="btn btn-primary" ng-click="addToCart(secondaryDomain)"
+                       ng-class="{disabled: (secondaryDomain.status !== 'available' && secondaryDomain.status !== 'premium')}">{{getBtnText(secondaryDomain)}}</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

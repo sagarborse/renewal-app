@@ -1,0 +1,46 @@
+<div class="contentWrp container-fluid">
+    <div class="row titleWrp">
+        <div class="col-xs-12">
+            <h1 class="welcome orange text-center">Welcome Back, {{currentUser.name | ifEmpty: 'Guest'}}</h1>
+            <p class="subtext text-center">Here is a list of your products nearing expiry, kindly renew it to avoid inconvenience.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="orderLoading" ng-show="fetchingOrders === true">
+            <h4>Please wait while we fetch your orders...</h4>
+        </div>
+        <div class="fetchingError" ng-show="fetchingError === true">
+            Something went wrong while attempting to fetch your Orders.
+        </div>
+        <table class="table-responsive orderList" width="100%">
+            <tr class="header" ng-show="orders">
+                <th class="col-xs-3"></th>
+                <th class="col-xs-3">PRODUCTS</th>
+                <th class="col-xs-3">EXPIRY</th>
+                <th class="col-xs-3"></th>
+            </tr>
+            <tr ng-show="orders.length === 0">
+               <td colspan="5" class="text-center">
+                   No Order Available for renewal
+               </td>
+            </tr>
+            <tr ng-repeat="order in orders | orderBy:'expiresOn'">
+                <td class="icon {{order.productCategory}}"></td>
+                <td>
+                    <p class="bold"><strong>{{order.productName}}</strong> <em ng-show="order.location" class="{{order.location}}"></em></p>
+                    <p class="domain small">{{order.domainName}}</p>
+                </td>
+                <td>
+                    <p class="bold"><i class="glyphicon glyphicon-time"></i> <strong>{{order.daysToExpiry}} Days</strong></p>
+                    <p class="date small">{{order.expiresOn | date:'longDate'}}</p>
+                </td>
+                <td ng-if="order.renew !== null">
+                    <a class="btn btn-success" ng-click="renew(order)">Renew Now</a>
+                </td>
+                <td ng-if="order.renew === null">
+                    <button data-event-category="order-listing" data-event-action="renew-click" class="btn disabled btn-disabled" uib-popover="{{getPopoverContent(order)}}" popover-title="{{getPopoverTitle(order)}}" popover-trigger="focus">Renew Now</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
